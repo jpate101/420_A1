@@ -153,7 +153,7 @@ print("Ran forest ---------------------------")
 
 print("Grid search")
 
-"""
+
 
 clf = GridSearchCV(RandomForestClassifier(),{
         'n_estimators' : [25,50,75,100,125],
@@ -162,16 +162,16 @@ clf = GridSearchCV(RandomForestClassifier(),{
         'min_samples_split' : [2,3,4,10],
         'min_samples_leaf' : [1,2,3,4,10],
 
-        },cv = 4,return_train_score = False)
+        },cv = 8,return_train_score = False)
 clf.fit(X_valid,Y_valid)
 #print(clf.cv_results_)
 print(clf.best_score_)
 print(clf.best_params_)
-"""
+
 print("using real data")
 
 #build/train random forest clf 
-forest = RandomForestClassifier(criterion= 'gini', max_depth=40, min_samples_leaf= 2, min_samples_split= 4, n_estimators= 25)
+forest = RandomForestClassifier(criterion= 'entropy', max_depth=30, min_samples_leaf= 10, min_samples_split= 3, n_estimators= 25)
 #forest = RandomForestClassifier() 
 forest.fit(X_train, Y_train)
 
