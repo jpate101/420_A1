@@ -91,7 +91,7 @@ def eval_model(model, X_train, Y_train, X_test, Y_test):
     conf.ax_.set_title('Testing Set Performance: ' + str(sum(pred == Y_test)/len(Y_test)));
     
 
-"""    
+
 print("K Neighbour ---------------------------")
 
 
@@ -147,7 +147,7 @@ plt.plot(neighbors_settings,test_accuracy,label='Test Accuracy')
 plt.ylabel('Accuracy')
 plt.xlabel('n_neighbors')
 plt.legend()
-"""
+
 print("Ran forest ---------------------------")
 
 
@@ -162,11 +162,11 @@ clf = GridSearchCV(RandomForestClassifier(),{
         'min_samples_split' : [2,3,4,10],
         'min_samples_leaf' : [1,2,3,4,10],
 
-        },cv = 8,return_train_score = False)
+        },cv = 4,return_train_score = False)
 clf.fit(X_valid,Y_valid)
 #print(clf.cv_results_)
-print(clf.best_score_)
-print(clf.best_params_)
+#print(clf.best_score_)
+#print(clf.best_params_)
 
 print("using real data")
 
