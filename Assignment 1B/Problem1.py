@@ -20,6 +20,7 @@ from sklearn.metrics import confusion_matrix
 from keras.preprocessing.image import ImageDataGenerator
 
 from keras.utils import to_categorical
+import seaborn as sns
 
 
 if __name__=="__main__":
@@ -54,34 +55,25 @@ if __name__=="__main__":
     
     #reshape train Y to vector format 
     print(test_Y)
-    
-    mapping = np.array([[1,0,0,0,0,0,0,0,0,0,0],
-                        [0,1,0,0,0,0,0,0,0,0,0],
-                        [0,0,1,0,0,0,0,0,0,0,0],
-                        [0,0,0,1,0,0,0,0,0,0,0],
-                        [0,0,0,0,1,0,0,0,0,0,0],
-                        [0,0,0,0,0,1,0,0,0,0,0],
-                        [0,0,0,0,0,0,1,0,0,0,0],
-                        [0,0,0,0,0,0,0,1,0,0,0],
-                        [0,0,0,0,0,0,0,0,1,0,0],
-                        [0,0,0,0,0,0,0,0,0,1,0],
-                        [0,0,0,0,0,0,0,0,0,0,1]])
-    
-
-    
-    
    
+    #replace 10 to 0s in ys 
+    train_Y = np.where(train_Y==10, 0, train_Y) 
+    test_Y = np.where(test_Y==10, 0, test_Y) 
+    
     print("mapping")
+    #zeros are labled as 10 
     #test_Y_re = mapping[test_Y]
     #train_Y_re = mapping[train_Y]
     
-    test_Y_re = to_categorical(test_Y, num_classes=11,dtype ="int")
-    train_Y_re = to_categorical(train_Y, num_classes=11,dtype ="int")
+    test_Y_re = to_categorical(test_Y, num_classes=10,dtype ="float32")
+    train_Y_re = to_categorical(train_Y, num_classes=10,dtype ="float32")
     
-    print(test_Y_re[776])
-    print(test_Y[776])
-    print(test_Y_re[776+1])
-    print(test_Y[776+1])
+    a = 5
+    
+    print(test_Y_re[a])
+    print(test_Y[a])
+    print(test_Y_re[a+1])
+    print(test_Y[a+1])
     
     def unique(list1):
         x = np.array(list1)
@@ -143,13 +135,18 @@ if __name__=="__main__":
     # #model.fit(train_X,train_Y_re,batch_size = 1,epochs=1)
     # model.fit(train_X,test,batch_size = 1,epochs=1)
     
+
+    
+    
+    
     def build_model(num_classes, output_activation=None):#week 4 lec/week 5 prac 
         # our model, input in an image shape
-        inputs = keras.Input(shape=(32, 32, 3, ))
+        inputs = keras.Input(shape=(32, 32, 3,))
         # run pairs of conv layers, all 3s3 kernels
         x = keras.layers.Conv2D(filters=32, kernel_size=(3,3), padding='same', activation='relu')(inputs)
         x = keras.layers.Conv2D(filters=32, kernel_size=(3,3), padding='same', activation=None)(x)
         # batch normalisation, before the non-linearity
+        #x = keras.layers.MaxPooling2D((2, 2))(x)
         x = keras.layers.BatchNormalization()(x)
         x = keras.layers.Activation('relu')(x)
         # spatial dropout, this will drop whole kernels, i.e. 20% of our 3x3 filters will be dropped out rather
@@ -181,43 +178,59 @@ if __name__=="__main__":
         x = keras.layers.Dense(64, activation='relu')(x)
         # the output
         outputs = keras.layers.Dense(num_classes, activation='softmax')(x)
+        #outputs = keras.layers.Dense(num_classes, activation=None)(x)
+        print(outputs)
+
 
         # build the model, and print a summary
         model_cnn = keras.Model(inputs=inputs, outputs=outputs, name='cnn_model')
     
         return model_cnn
 
-    model = build_model(11)
+    model = build_model(10)
     model.summary()
     
-    model.compile(loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              optimizer=keras.optimizers.Adam(),
-              metrics=['accuracy'])
-    #model.compile(optimizer='adam', loss='categorical_crossentropy',metrics=['accuracy'])
+    #model.compile(loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+    #           optimizer=keras.optimizers.Adam(),
+    #           metrics=['accuracy'])
+    model.compile(optimizer=keras.optimizers.Adam(),
+                  loss='categorical_crossentropy',
+                  #loss='mean_squared_error',
+                 metrics=['accuracy'])
+    #model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     
     print(train_Y_re.shape)
-    #print(train_Y_re[1].shape)
-    #test = train_Y_re.reshape(-1,11,)
-    #test = train_Y_re.reshape(1,-1)
-    #print(test[3].shape)
-    #print(test.shape)
-    
-    #model.fit(train_X,test,batch_size = 1,epochs=1)
+    print(train_Y_re.reshape(1000,10).shape)
+    print("output shape---")
+    print(train_Y_re[1].shape)
+
     model.fit(train_X,train_Y_re,batch_size = 1,epochs=1)
+    #model.fit(train_X,train_Y,batch_size = 1,epochs=1)
+    #model.fit(test_X,test_Y,batch_size = 1,epochs=1)
         
     
     
     #predictions = model.predict(test_X) 
     predictions = model.predict(test_X) 
     
-    a = 5
+    a = 450
     
     print(predictions[a])
     print(test_Y[a])
+    print(test_Y_re[a])
+
     print(predictions[a+1])
     print(test_Y[a+1])
+    print(test_Y_re[a+1])
+
     print(predictions[a+2])
     print(test_Y[a+2])
+    print(test_Y_re[a+2])
+
+    print(predictions[a+3])
+    print(test_Y[a+3])
+    print(test_Y_re[a+3])
+
     
     # #MAE
     #mse =  np.mean(abs(predictions-test_Y))
@@ -242,7 +255,11 @@ if __name__=="__main__":
         ax.hist(y_test, bins=len(numpy.diagonal(cm)), rwidth=0.95)
         ax.plot(numpy.diagonal(cm))
 
-    eval_model(model, test_X, test_Y)
+    #eval_model(model, test_X, test_Y)
+    
+
+    
+
 
     
     
