@@ -190,13 +190,13 @@ if __name__=="__main__":
     model = build_model(10)
     model.summary()
     
-    #model.compile(loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-    #           optimizer=keras.optimizers.Adam(),
-    #           metrics=['accuracy'])
-    model.compile(optimizer=keras.optimizers.Adam(),
-                  loss='categorical_crossentropy',
+    model.compile(loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+               optimizer=keras.optimizers.Adam(),
+               metrics=['accuracy'])
+    #model.compile(optimizer=keras.optimizers.Adam(),
+    #              loss='categorical_crossentropy',
                   #loss='mean_squared_error',
-                 metrics=['accuracy'])
+    #             metrics=['accuracy'])
     #model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     
     print(train_Y_re.shape)
