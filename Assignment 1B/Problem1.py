@@ -151,7 +151,7 @@ if __name__=="__main__":
         x = keras.layers.Activation('relu')(x)
         # spatial dropout, this will drop whole kernels, i.e. 20% of our 3x3 filters will be dropped out rather
         # than dropping out 20% of the invidual pixels
-        x = keras.layers.SpatialDropout2D(0.2)(x)
+        #x = keras.layers.SpatialDropout2D(0.2)(x)
         # max pooling, 2x2, which will downsample the image
         x = keras.layers.MaxPool2D(pool_size=(2, 2))(x)
         # rinse and repeat with 2D convs, batch norm, dropout and max pool
@@ -159,14 +159,14 @@ if __name__=="__main__":
         x = keras.layers.Conv2D(filters=64, kernel_size=(3,3), padding='same', activation=None)(x)
         x = keras.layers.BatchNormalization()(x)
         x = keras.layers.Activation('relu')(x)
-        x = keras.layers.SpatialDropout2D(0.2)(x)
+        #x = keras.layers.SpatialDropout2D(0.2)(x)
         x = keras.layers.MaxPool2D(pool_size=(2, 2))(x)
         # final conv2d, batch norm and spatial dropout
         x = keras.layers.Conv2D(filters=128, kernel_size=(3,3), padding='same', activation='relu')(x)
         x = keras.layers.Conv2D(filters=128, kernel_size=(3,3), padding='same', activation=None)(x)
         x = keras.layers.BatchNormalization()(x)
         x = keras.layers.Activation('relu')(x)
-        x = keras.layers.SpatialDropout2D(0.2)(x)
+        #x = keras.layers.SpatialDropout2D(0.2)(x)
 
         # flatten layer
         x = keras.layers.Flatten()(x)
@@ -174,7 +174,7 @@ if __name__=="__main__":
         # in the middle
         x = keras.layers.Dense(128, activation='relu')(x)
         x = keras.layers.Dense(128, activation='relu')(x)
-        x = keras.layers.Dropout(0.5)(x)
+        #x = keras.layers.Dropout(0.5)(x)
         x = keras.layers.Dense(64, activation='relu')(x)
         # the output
         outputs = keras.layers.Dense(num_classes, activation='softmax')(x)
@@ -195,7 +195,7 @@ if __name__=="__main__":
                metrics=['accuracy'])
     #model.compile(optimizer=keras.optimizers.Adam(),
     #              loss='categorical_crossentropy',
-                  #loss='mean_squared_error',
+    #              #loss='mean_squared_error',
     #             metrics=['accuracy'])
     #model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     
