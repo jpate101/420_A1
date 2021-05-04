@@ -78,7 +78,7 @@ if __name__=="__main__":
     
     datagen = ImageDataGenerator(
                              rotation_range=10,
-                             zoom_range=[0.95, 1.05],
+                             zoom_range=[0.9, 1.1],
                              height_shift_range=0.10,
                              shear_range=0.15,
                              #channel_shift_range=100,
@@ -91,7 +91,8 @@ if __name__=="__main__":
     model.compile(loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               optimizer=keras.optimizers.SGD(),#(lr=1e-4, momentum=0.9),
               metrics=['accuracy'])
-    model.fit_generator(datagen.flow(train_X, train_Y, batch_size=120),epochs=100)
+    model.fit_generator(datagen.flow(train_X, train_Y, batch_size=40),epochs=250)
+    #model.fit(train_X,train_Y,batch_size = 40,epochs=50)
     #model.fit(train_X, train_Y,
     #      batch_size=128,
     #      epochs=10,
@@ -143,6 +144,8 @@ if __name__=="__main__":
     print(count)
     print(len(indexes))
     print((count/len(indexes))*100)
+    
+    model.summary()
     
     
     
