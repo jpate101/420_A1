@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+ne # -*- coding: utf-8 -*-
 """
 Created on Wed Apr 28 17:46:50 2021
 
@@ -131,7 +131,7 @@ if __name__=="__main__":
     
     #for i in range(1):
 
-    model.fit(train_X,train_Y,batch_size = 40,epochs=100)
+    model.fit(train_X,train_Y,batch_size = 40,epochs=50)
        
     predictions = model.predict(test_X)
    

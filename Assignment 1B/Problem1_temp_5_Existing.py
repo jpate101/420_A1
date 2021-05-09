@@ -91,8 +91,8 @@ if __name__=="__main__":
     model.compile(loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               optimizer=keras.optimizers.SGD(),#(lr=1e-4, momentum=0.9),
               metrics=['accuracy'])
-    model.fit_generator(datagen.flow(train_X, train_Y, batch_size=40),epochs=250)
-    #model.fit(train_X,train_Y,batch_size = 40,epochs=50)
+    #model.fit_generator(datagen.flow(train_X, train_Y, batch_size=40),epochs=250)
+    model.fit(train_X,train_Y,batch_size = 40,epochs=50)
     #model.fit(train_X, train_Y,
     #      batch_size=128,
     #      epochs=10,
@@ -145,7 +145,7 @@ if __name__=="__main__":
     print(len(indexes))
     print((count/len(indexes))*100)
     
-    model.summary()
+
     
     
     
