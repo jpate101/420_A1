@@ -1,10 +1,9 @@
 
 
 import pickle
-import cPickle
 import numpy
 
-from sklearn import cross_validation
+from sklearn.model_selection import cross_validate
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_selection import SelectPercentile, f_classif
 
@@ -29,7 +28,7 @@ def preprocess(words_file = "./data/word_data.pkl", authors_file="./data/email_a
     authors_file_handler.close()
 
     words_file_handler = open(words_file, "r")
-    word_data = cPickle.load(words_file_handler)
+    word_data = pickle.load(words_file_handler)
     words_file_handler.close()
 
     # test_size is the percentage of events assigned to the test set
